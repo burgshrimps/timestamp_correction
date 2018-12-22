@@ -58,3 +58,4 @@ There are more frames between the two button anchor points than between the two 
 There are more frames between the two LED anchor points than between the two button anchor points. Could be a result of a delay in LED detection or some problems regarding transmitting the signal inside the button box. Method is the same as in case II.
 
 ## Further observations
+- Due to an internal correction of CVB it sometimes happens that there is a huge time difference between two timestamps which is followed by about 10 timestamps with a significantly smaller time difference to each other. These artefacts seem to compensate each other and not affect any other frames outside this window.
