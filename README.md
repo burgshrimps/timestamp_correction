@@ -1,39 +1,34 @@
-# Script to correct video timestamps recorded with a highspeed camera
+# Video Timestamp Correction
 
 ## Motivation
 To compare specific rodent behavior with their neuronal activity, their behavior (camera) and their neuronal activity (EEG) was recorded simultanously during an experiment. 
 In order to begin further analysis one must make sure the two different signals are in sync. Due to the length of each recording (40-50 min) and a framerate of 100 FPS it is likely that the video recording is not 100% regarding the timestamp of each frame and the total number of recorded frames.
 
 ## Hard- and Software
-Highspeed camera:
-Video Recording software: CVB software suite
-EEG system: Axona
+- Highspeed camera: 
+- Video Recording software: CVB software suite
+- EEG system: Axona
 
 ## Idea 
-For the timestamp correction the following setup was used.
+For the timestamp correction the following setup was used:
 
 - CVB recorded the video signal from the camera and encoded the timestamp of each frame in an AVI container. 
-
 - The highspeed camera sends a TTL pulse to the EEG system every time it acquired a new frame.
-
 - A "button box" was used to transmit a TTL pulse to the EEG system every time the button was pressed. At the same time a LED lit up, clearly visible in the video recording.
-
 - In a different script the LED timestamps are being detected in the video.
-
 - Use the button and LED timestamps as anchor points in which we know which timestamp recorded by CVB corresponds to which (real) timestamp of when the frame got actually acquired by the camera and sent to the EEG system.
 
 ## Methods
 
-# Axona file input
+### Axona file input
 - Read in the "digitalIO" textfile from the EEG systen which contains 3 columns.
-
-1. time: time in seconds of corresponding event after device start.
-2. type: usually every event is type "INPUT" except for one event in the beginning of type "KEY". This column is not of particular interest for the given problem.
-3. value: encodes what kind of event was happening.
-	4 -> camera captured frame
-	2 -> button was pressed
-	6 -> button was pressed while frame was captured
-	0 -> event stopped (e.g. frame done being captured)
+  1. time: time in seconds of corresponding event after device start.
+  2. type: usually every event is type "INPUT" except for one event in the beginning of type "KEY". This column is not of particular interest for the given problem.
+  3. value: encodes what kind of event was happening.
+    - 4 -> camera captured frame
+    - 2 -> button was pressed
+    - 6 -> button was pressed while frame was captured
+    - 0 -> event stopped (e.g. frame done being captured)
 
 - Extract timestamps of when the camera acquired each frame by getting time of all events with value >= 4
 - Subtract the first timestamp from every timestamp to make sure they start at 0.
