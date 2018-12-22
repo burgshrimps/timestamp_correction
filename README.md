@@ -1,8 +1,4 @@
-### Script to correct video timestamps recorded with a highspeed camera
-
-Nico Alavi, 22. Dec 2018, <nico.alavi aT fu-berlin.de>
-Leibniz-Institute for Neurobiology, Magdeburg
-Department Functional Architecture of Memory
+# Script to correct video timestamps recorded with a highspeed camera
 
 ## Motivation
 To compare specific rodent behavior with their neuronal activity, their behavior (camera) and their neuronal activity (EEG) was recorded simultanously during an experiment. 
