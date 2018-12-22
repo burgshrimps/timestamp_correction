@@ -152,10 +152,16 @@ cvb_corrected_idx(cvb_idx_to_fill) = cvb_corrected_idx(cvb_idx_to_fill-1);
 cvb_corrected_ts = axona(cvb_corrected_idx);
 
 %% Save results to .txt files
-idx_with_ts = [cvb_corrected_idx cvb_corrected_ts];
-% dlmwrite('corrected_ts.txt', idx_with_ts);
+corrected_idx_with_ts = [cvb_corrected_idx'; cvb_corrected_ts'];
+fileID = fopen(strcat(cvb_name(1:14),'corrected_TS.txt'),'w');
+fprintf(fileID, '%8s %10s\n','Index', 'Timestamp');
+fprintf(fileID,'%8d %10.3f\n',corrected_idx_with_ts);
+fclose(fileID);
 
-%% Function
+
+
+
+%% Functions
 function comma2point_overwrite(filespec)
     % Replaces all commas in a .txt file with dots
     file    = memmapfile(filespec, 'writable', true);
@@ -195,19 +201,3 @@ function result_idx = evenly_distr_idx(len, num_miss_frames)
         result_idx(i) = round(i * tmp);
     end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
