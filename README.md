@@ -5,9 +5,9 @@ To compare specific rodent behavior with their neuronal activity, their behavior
 In order to begin further analysis one must make sure the two different signals are in sync. Due to the length of each recording (40-50 min) and a framerate of 100 FPS it is likely that the video recording is not 100% regarding the timestamp of each frame and the total number of recorded frames.
 
 ## Hard- and Software
-- Highspeed camera: 
-- Video Recording software: CVB software suite
-- EEG system: Axona
+- Highspeed camera: Genie Nano M1280 NIR
+- Video Recording software: CVB Software Suite
+- EEG system: Axona System
 
 ## Idea 
 For the timestamp correction the following setup was used:
