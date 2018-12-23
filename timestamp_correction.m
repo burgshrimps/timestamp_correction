@@ -158,8 +158,20 @@ fprintf(fileID, '%8s %10s\n','Index', 'Timestamp');
 fprintf(fileID,'%8d %10.3f\n',corrected_idx_with_ts);
 fclose(fileID);
 
+%% Summary file
+fileID = fopen(strcat(cvb_name(1:14),'statistic.txt'),'w');
+fprintf(fileID, 'Statistic of the timestamp correction for %s.\n\n', cvb_name(1:13));
 
+fprintf(fileID, 'Total frames acquired by the camera: %d\n', length(axona));
+fprintf(fileID, 'Total frames recorded by CVB: %d\n', length(cvb));
+fprintf(fileID, 'Number of frames CVB dropped: %d\n\n', length(axona)-length(cvb));
 
+fprintf(fileID, 'Difference in number of frames between two anchor points\n\n');
+fprintf(fileID, '%8s %8s %10s\n', 'Axona', 'CVB', 'Axona-CVB');
+anchor_diff = [diff(axona_anchor)'; diff(cvb_anchor)'; inter_anchor_diff'];
+fprintf(fileID, '%8d %8d %10d\n', anchor_diff);
+
+fclose(fileID);
 
 %% Functions
 function comma2point_overwrite(filespec)
