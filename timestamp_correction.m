@@ -164,14 +164,41 @@ fprintf(fileID, 'Statistic of the timestamp correction for %s.\n\n', cvb_name(1:
 
 fprintf(fileID, 'Total frames acquired by the camera: %d\n', length(axona));
 fprintf(fileID, 'Total frames recorded by CVB: %d\n', length(cvb));
-fprintf(fileID, 'Number of frames CVB dropped: %d\n\n', length(axona)-length(cvb));
+fprintf(fileID, 'Number of frames CVB dropped: %d\n', length(axona)-length(cvb));
+fprintf(fileID, 'Mean time difference between Axona and CVB anchor points: %.3fs\n\n', mean(led-button));
 
-fprintf(fileID, 'Difference in number of frames between two anchor points\n\n');
+fprintf(fileID, 'Difference in number of frames between two successive anchor points\n\n');
 fprintf(fileID, '%8s %8s %10s\n', 'Axona', 'CVB', 'Axona-CVB');
 anchor_diff = [diff(axona_anchor)'; diff(cvb_anchor)'; inter_anchor_diff'];
 fprintf(fileID, '%8d %8d %10d\n', anchor_diff);
 
 fclose(fileID);
+
+%% Plots
+f = figure;
+subplot(2,1,1);
+plot(1:length(axona),axona);
+hold on;
+plot(1:length(cvb),cvb);
+plot(button_frm_idx, button, 'kx');
+title('Axona vs CVB');
+xlabel('frame number');
+ylabel('time [s]');
+legend({'Axona', 'CVB', 'Button presses'}, 'Location', 'north');
+hold off;
+
+subplot(2,1,2);
+plot(1:length(axona),axona);
+hold on;
+plot(cvb_corrected_idx, cvb_corrected_ts);
+plot(button_frm_idx, button, 'kx');
+title('Axona vs CVB (corrected)');
+xlabel('frame number');
+ylabel('time [s]');
+legend({'Axona', 'CVB (corrected)', 'Button presses'}, 'Location', 'north');
+hold off;
+
+savefig(f, strcat(cvb_name(1:14),'TimePerFrame.fig'));
 
 %% Functions
 function comma2point_overwrite(filespec)
