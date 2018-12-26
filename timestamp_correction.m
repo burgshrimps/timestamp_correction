@@ -18,7 +18,7 @@ digitalIO_struct = dir(digitalIO_info);
 digitalIO_name = digitalIO_struct.name;
 digitalIO_file = strcat(filepath, '/', digitalIO_name);
 comma2point_overwrite(digitalIO_file); % replace commas with dots to read in correctly
-[dtime, dtype, dvalue] = textread(digitalIO_file, '%f %s %u', 'headerlines', 5, 'endofline', '\r\n'); % read data from file, skip 5 first lines since video recording starts after that
+[dtime, dtype, dvalue] = textread(digitalIO_file, '%f %s %u', 'headerlines', 1, 'endofline', '\r\n'); % read data from file, skip 5 first lines since video recording starts after that
 
 % value explanation:
 % 4 -> frame captured
@@ -28,7 +28,7 @@ comma2point_overwrite(digitalIO_file); % replace commas with dots to read in cor
 
 % remove the event stopped (value == 0) entries since we only need to
 % consider beginning of event (e.g. start recording frame)
-dtype = dtype(dvalue ~= 0);
+dtype = dtype(dvalue == 'INPUT');
 dtime = dtime(dvalue ~= 0);
 dvalue = dvalue(dvalue ~= 0);
 
@@ -153,13 +153,13 @@ cvb_corrected_ts = axona(cvb_corrected_idx);
 
 %% Save results to .txt files
 corrected_idx_with_ts = [cvb_corrected_idx'; cvb_corrected_ts'];
-fileID = fopen(strcat(cvb_name(1:14),'corrected_TS.txt'),'w');
+fileID = fopen(strcat(filepath, '/', cvb_name(1:14),'corrected_TS.txt'),'w');
 fprintf(fileID, '%8s %10s\n','Index', 'Timestamp');
 fprintf(fileID,'%8d %10.3f\n',corrected_idx_with_ts);
 fclose(fileID);
 
 %% Summary file
-fileID = fopen(strcat(cvb_name(1:14),'statistic.txt'),'w');
+fileID = fopen(strcat(filepath, '/', cvb_name(1:14),'statistic.txt'),'w');
 fprintf(fileID, 'Statistic of the timestamp correction for %s.\n\n', cvb_name(1:13));
 
 fprintf(fileID, 'Total frames acquired by the camera: %d\n', length(axona));
@@ -198,7 +198,7 @@ ylabel('time [s]');
 legend({'Axona', 'CVB (corrected)', 'Button presses'}, 'Location', 'north');
 hold off;
 
-savefig(f, strcat(cvb_name(1:14),'TimePerFrame.fig'));
+savefig(f, strcat(filepath, '/', cvb_name(1:14),'TimePerFrame.fig'));
 
 %% Functions
 function comma2point_overwrite(filespec)
